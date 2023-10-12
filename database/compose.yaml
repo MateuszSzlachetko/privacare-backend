@@ -1,0 +1,17 @@
+services:
+  database:
+    restart: no
+    image: 'postgres:latest'
+    ports:
+      - '5432:5432'
+    environment:
+      - 'POSTGRES_USER=postgres'
+      - 'POSTGRES_DB=postgres'
+      - 'POSTGRES_PASSWORD=postgres'
+      - 'LANG=en_US.utf8'
+      - 'PGDATA=/data/postgres'
+    volumes:
+      - "postgres:/data/postgres"
+
+volumes:
+  postgres:
