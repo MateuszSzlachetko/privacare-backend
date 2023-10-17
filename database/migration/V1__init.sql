@@ -6,7 +6,7 @@ CREATE TABLE IF NOT EXISTS "news" (
                         "content" text
 );
 
-CREATE TABLE IF NOT EXISTS "users" (
+CREATE TABLE IF NOT EXISTS "user" (
                          "id" uuid PRIMARY KEY,
                          "auth_id" uuid UNIQUE,
                          "created_at" timestamp,
@@ -16,7 +16,7 @@ CREATE TABLE IF NOT EXISTS "users" (
                          "phone_number" varchar
 );
 
-CREATE TABLE IF NOT EXISTS "notes" (
+CREATE TABLE IF NOT EXISTS "note" (
                          "id" uuid PRIMARY KEY,
                          "creator_id" uuid,
                          "patient_id" uuid,
@@ -24,7 +24,7 @@ CREATE TABLE IF NOT EXISTS "notes" (
                          "content" text
 );
 
-CREATE TABLE IF NOT EXISTS "tasks" (
+CREATE TABLE IF NOT EXISTS "task" (
                          "id" uuid PRIMARY KEY,
                          "creator_id" uuid,
                          "created_at" timestamp,
@@ -38,7 +38,7 @@ CREATE TABLE IF NOT EXISTS "category" (
                             "name" varchar UNIQUE
 );
 
-CREATE TABLE IF NOT EXISTS "appointments" (
+CREATE TABLE IF NOT EXISTS "appointment" (
                                 "id" uuid PRIMARY KEY,
                                 "creator_id" uuid,
                                 "patient_id" uuid,
@@ -47,16 +47,16 @@ CREATE TABLE IF NOT EXISTS "appointments" (
                                 "state" varchar
 );
 
-ALTER TABLE "news" ADD FOREIGN KEY ("creator_id") REFERENCES "users" ("id");
+ALTER TABLE "news" ADD FOREIGN KEY ("creator_id") REFERENCES "user" ("id");
 
-ALTER TABLE "notes" ADD FOREIGN KEY ("creator_id") REFERENCES "users" ("id");
+ALTER TABLE "note" ADD FOREIGN KEY ("creator_id") REFERENCES "user" ("id");
 
-ALTER TABLE "notes" ADD FOREIGN KEY ("patient_id") REFERENCES "users" ("id");
+ALTER TABLE "note" ADD FOREIGN KEY ("patient_id") REFERENCES "user" ("id");
 
-ALTER TABLE "tasks" ADD FOREIGN KEY ("creator_id") REFERENCES "users" ("id");
+ALTER TABLE "task" ADD FOREIGN KEY ("creator_id") REFERENCES "user" ("id");
 
-ALTER TABLE "tasks" ADD FOREIGN KEY ("category_id") REFERENCES "category" ("id");
+ALTER TABLE "task" ADD FOREIGN KEY ("category_id") REFERENCES "category" ("id");
 
-ALTER TABLE "appointments" ADD FOREIGN KEY ("creator_id") REFERENCES "users" ("id");
+ALTER TABLE "appointment" ADD FOREIGN KEY ("creator_id") REFERENCES "user" ("id");
 
-ALTER TABLE "appointments" ADD FOREIGN KEY ("patient_id") REFERENCES "users" ("id");
+ALTER TABLE "appointment" ADD FOREIGN KEY ("patient_id") REFERENCES "user" ("id");

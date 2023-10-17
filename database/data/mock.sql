@@ -1,4 +1,4 @@
-insert into users (id, auth_id, created_at, name, surname, pesel, phone_number)
+insert into "user" (id, auth_id, created_at, name, surname, pesel, phone_number)
 values  ('9dbae116-3954-4a2c-9308-31fb971dc6fc',
         '582fd8f4-48c8-4e67-8c97-3319acd76fe0',
         '2023-10-14 16:02:34',
@@ -62,7 +62,7 @@ values ('ab5da93f-2508-4180-abb8-358ac2b67304',
         ' Po kilku miesiącach ciężkiej pracy, nadszedł czas' ||
         ' na chwilę relaksu i regeneracji.');
 
-insert into notes (id, creator_id, patient_id, created_at, content)
+insert into note (id, creator_id, patient_id, created_at, content)
 values ('a7294a41-d67e-4d67-a833-4adeb3f80ee6',
         '9dbae116-3954-4a2c-9308-31fb971dc6fc',
         '432b984b-3a3e-4078-af5d-c620bd3b9159',
@@ -77,7 +77,7 @@ values ('a7294a41-d67e-4d67-a833-4adeb3f80ee6',
         ' i konsultacje specjalistyczne.'
         );
 
-insert into tasks (id, creator_id, created_at, content, category_id, state)
+insert into task (id, creator_id, created_at, content, category_id, state)
 values ('f8831620-b4af-4bf3-94ea-5d143fb6c622',
         '9dbae116-3954-4a2c-9308-31fb971dc6fc',
         '2023-10-22 19:24:35',
@@ -98,7 +98,7 @@ values ('f8831620-b4af-4bf3-94ea-5d143fb6c622',
         'DONE'
         );
 
-insert into appointments (id, creator_id, patient_id, starts_at, finishes_at, state)
+insert into appointment (id, creator_id, patient_id, starts_at, finishes_at, state)
 values ('1219e3da-4151-4baa-9256-86679e350a3f',
         '9dbae116-3954-4a2c-9308-31fb971dc6fc',
         '432b984b-3a3e-4078-af5d-c620bd3b9159',
