@@ -7,6 +7,7 @@ import com.privacare.model.entity.User;
 import com.privacare.repository.NewsRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
@@ -68,5 +69,9 @@ public class NewsService {
             return 0;
 
         return this.newsRepository.updateNewsBy(newsId, title, content);
+    }
+
+    public void deleteNews(UUID newsId) throws EmptyResultDataAccessException {
+        this.newsRepository.deleteById(newsId);
     }
 }
