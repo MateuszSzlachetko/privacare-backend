@@ -5,7 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Data
@@ -18,7 +18,7 @@ public class NewsResponseDTO {
 
     private String creatorFullName;
 
-    private Instant createdAt;
+    private LocalDateTime createdAt;
 
     private String title;
 
