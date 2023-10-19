@@ -4,9 +4,12 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
@@ -18,6 +21,12 @@ import java.util.UUID;
 public class News {
 
     @Id
+    @GeneratedValue(generator = "uuid4")
+    @GenericGenerator(
+            name = "uuid4",
+            strategy = "org.hibernate.id.UUIDGenerator"
+    )
+    @Type(type = "pg-uuid")
     private UUID id;
 
     @ManyToOne
@@ -25,7 +34,7 @@ public class News {
     private User creator;
 
     @Column(name = "created_at")
-    private Instant createdAt;
+    private LocalDateTime createdAt;
 
     @Column
     private String title;

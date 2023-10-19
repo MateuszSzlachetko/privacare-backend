@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.time.Instant;
@@ -19,6 +21,12 @@ import java.util.UUID;
 public class User {
 
     @Id
+    @GeneratedValue(generator = "uuid4")
+    @GenericGenerator(
+            name = "uuid4",
+            strategy = "org.hibernate.id.UUIDGenerator"
+    )
+    @Type(type = "pg-uuid")
     private UUID id;
 
     @Column
