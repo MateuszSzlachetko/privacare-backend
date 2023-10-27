@@ -33,13 +33,7 @@ public class NewsService {
         Page<News> result = this.newsRepository.findAll(pageable);
 
         List<NewsResponseDTO> mappedNews = result.getContent().stream()
-                .map(news -> NewsResponseDTO.builder()
-                        .id(news.getId())
-                        .creatorFullName(news.getCreator().getName() + " " + news.getCreator().getSurname())
-                        .createdAt(news.getCreatedAt())
-                        .title(news.getTitle())
-                        .content(news.getContent())
-                        .build())
+                .map(NewsService::mapNewsToNewsResponse)
                 .collect(Collectors.toList());
 
         return new PageImpl<>(mappedNews, result.getPageable(), result.getTotalElements());
@@ -57,13 +51,7 @@ public class NewsService {
 
         this.newsRepository.save(news);
 
-        return NewsResponseDTO.builder()
-                .id(news.getId())
-                .creatorFullName(news.getCreator().getName() + " " + news.getCreator().getSurname())
-                .createdAt(news.getCreatedAt())
-                .title(news.getTitle())
-                .content(news.getContent())
-                .build();
+        return mapNewsToNewsResponse(news);
     }
 
     public Integer editNews(NewsEditRequestDTO newsEditRequestDTO) {
@@ -84,6 +72,10 @@ public class NewsService {
         News news = this.newsRepository.findById(newsId).orElseThrow(
                 () -> new NoSuchElementException("News with id: " + newsId + " not found"));
 
+        return mapNewsToNewsResponse(news);
+    }
+
+    private static NewsResponseDTO mapNewsToNewsResponse(News news) {
         return NewsResponseDTO.builder()
                 .id(news.getId())
                 .creatorFullName(news.getCreator().getName() + " " + news.getCreator().getSurname())

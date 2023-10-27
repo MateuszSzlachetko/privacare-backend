@@ -1,6 +1,6 @@
 package com.privacare.controller;
 
-import com.privacare.exception.ErrorDetails;
+import com.privacare.utilities.exception.ErrorDetails;
 import com.privacare.model.dto.request.NewsEditRequestDTO;
 import com.privacare.model.dto.request.NewsRequestDTO;
 import com.privacare.model.dto.response.NewsResponseDTO;

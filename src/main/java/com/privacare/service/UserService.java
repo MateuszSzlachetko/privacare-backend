@@ -18,6 +18,6 @@ public class UserService {
 
     public User getUserBy(UUID id) throws NoSuchElementException {
         return this.userRepository.findById(id).orElseThrow(
-                () -> new NoSuchElementException("User with id: " + id +" not found"));
+                () -> new NoSuchElementException("User with id: " + id + " not found"));
     }
 }
