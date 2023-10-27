@@ -1,6 +1,7 @@
 package com.privacare.controller;
 
 import com.privacare.exception.ErrorDetails;
+import com.privacare.model.dto.request.NewsEditRequestDTO;
 import com.privacare.model.dto.request.NewsRequestDTO;
 import com.privacare.model.dto.response.NewsResponseDTO;
 import com.privacare.service.NewsService;
@@ -34,6 +35,13 @@ public class NewsController {
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
+    @GetMapping("/{newsId}")
+    public ResponseEntity<NewsResponseDTO> getNews(@PathVariable UUID newsId) {
+        NewsResponseDTO result = this.newsService.getNewsBy(newsId);
+
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
     @PostMapping
     public ResponseEntity<NewsResponseDTO> addNews(@RequestBody @Valid NewsRequestDTO newsRequestDTO) {
         NewsResponseDTO result = this.newsService.addNews(newsRequestDTO);
@@ -41,12 +49,9 @@ public class NewsController {
         return new ResponseEntity<>(result, HttpStatus.CREATED);
     }
 
-    @PutMapping("/{newsId}")
-    public ResponseEntity<Integer> editNews(
-            @PathVariable UUID newsId,
-            @RequestParam(required = false) String title,
-            @RequestParam(required = false) String content) {
-        Integer rowsAffected = this.newsService.editNews(newsId, title, content);
+    @PutMapping
+    public ResponseEntity<Integer> editNews(@RequestBody NewsEditRequestDTO newsEditRequestDTO) {
+        Integer rowsAffected = this.newsService.editNews(newsEditRequestDTO);
 
         return new ResponseEntity<>(rowsAffected, HttpStatus.OK);
     }

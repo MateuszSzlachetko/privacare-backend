@@ -2,7 +2,7 @@ CREATE TABLE IF NOT EXISTS "news" (
                         "id" uuid PRIMARY KEY,
                         "creator_id" uuid,
                         "created_at" timestamp,
-                        "title" varchar(32),
+                        "title" varchar(64),
                         "content" text
 );
 

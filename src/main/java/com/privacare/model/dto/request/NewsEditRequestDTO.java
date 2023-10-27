@@ -14,10 +14,10 @@ import java.util.UUID;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class NewsRequestDTO {
+public class NewsEditRequestDTO {
 
     @NotNull
-    private UUID creatorId;
+    private UUID id;
 
     @Size(max = 64)
     @NotBlank(message = "Title can not be empty")
