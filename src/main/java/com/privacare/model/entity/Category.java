@@ -1,11 +1,10 @@
 package com.privacare.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.util.Set;
@@ -26,5 +25,6 @@ public class Category {
     private String name;
 
     @OneToMany(mappedBy = "category")
+    @JsonIgnore
     private Set<Task> tasks;
 }

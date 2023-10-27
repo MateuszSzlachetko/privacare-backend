@@ -40,9 +40,9 @@ values  ('9dbae116-3954-4a2c-9308-31fb971dc6fc',
         '501127658');
 
 -- insert into category (id, name)
--- values (1, 'Ważne terminy'),
---        (2, 'Lista Zakupów'),
---        (3, 'Administracja i finanse');
+-- values (1, 'Important Deadlines'),
+--        (2, 'Shopping List'),
+--        (3, 'Administration and Finance');
 
 insert into news (id, creator_id, created_at, title, content)
 values ('ab5da93f-2508-4180-abb8-358ac2b67304',
