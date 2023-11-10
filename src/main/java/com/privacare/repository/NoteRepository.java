@@ -13,7 +13,7 @@ import java.util.UUID;
 
 @Repository
 public interface NoteRepository extends JpaRepository<Note, UUID> {
-    List<Note> findByPatientId(UUID patientId);
+    List<Note> findByPatientIdOrderByCreatedAtDesc(UUID patientId);
 
     @Transactional
     @Modifying

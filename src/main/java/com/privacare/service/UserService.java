@@ -24,6 +24,11 @@ public class UserService {
                 () -> new NoSuchElementException("User with id: " + id + " not found"));
     }
 
+    public UserResponseDTO getUserResponseDTOBy(UUID id) throws NoSuchElementException {
+        return mapUserToUserResponse(this.userRepository.findById(id).orElseThrow(
+                () -> new NoSuchElementException("User with id: " + id + " not found")));
+    }
+
     public List<UserResponseDTO> getUsersByPeselFragment(String peselFragment) {
         return this.userRepository.findByPeselContaining(peselFragment).stream()
                 .map(UserService::mapUserToUserResponse).collect(Collectors.toList());

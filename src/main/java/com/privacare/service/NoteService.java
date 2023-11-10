@@ -30,7 +30,7 @@ public class NoteService {
     public List<NoteResponseDTO> getNotesBy(UUID patientId) {
         User patient = this.userService.getUserBy(patientId);
 
-        return this.noteRepository.findByPatientId(patient.getId()).stream()
+        return this.noteRepository.findByPatientIdOrderByCreatedAtDesc(patient.getId()).stream()
                 .map(NoteService::mapNoteToNoteResponse)
                 .collect(Collectors.toList());
     }
@@ -70,5 +70,10 @@ public class NoteService {
                 () -> new NoSuchElementException("Note with id: " + noteEditRequestDTO.getId() + " not found"));
 
         return this.noteRepository.updateNoteBy(noteEditRequestDTO.getId(), noteEditRequestDTO.getContent());
+    }
+
+    public NoteResponseDTO getNoteBy(UUID id) {
+        return mapNoteToNoteResponse( this.noteRepository.findById(id).orElseThrow(
+                () -> new NoSuchElementException("Note with id: " + id + " not found")));
     }
 }

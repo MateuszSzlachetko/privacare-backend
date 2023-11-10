@@ -33,6 +33,14 @@ public class NoteController {
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<NoteResponseDTO> getNoteBy(
+            @PathVariable UUID id) {
+        NoteResponseDTO result = this.noteService.getNoteBy(id);
+
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
     @PostMapping
     public ResponseEntity<NoteResponseDTO> addNote(@RequestBody @Valid NoteRequestDTO noteRequestDTO) {
         NoteResponseDTO result = this.noteService.addNote(noteRequestDTO);
