@@ -1,0 +1,1 @@
+ALTER TABLE "slot" ADD CONSTRAINT "unique_starts_at" UNIQUE ("starts_at");

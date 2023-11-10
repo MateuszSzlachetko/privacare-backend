@@ -8,15 +8,16 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
-@Table(name = "appointment")
+@Table(name = "slot")
 @Builder
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Appointment {
+public class Slot {
 
     @Id
     @GeneratedValue(generator = "uuid4")
@@ -28,17 +29,18 @@ public class Appointment {
     private UUID id;
 
     @ManyToOne
-    @JoinColumn(name = "creator_id", nullable = false)
-    private User creator;
+    @JoinColumn(name = "doctor_id", nullable = false)
+    private User doctor;
 
     @ManyToOne
-    @JoinColumn(name = "patient_id", nullable = false)
-    private User patient;
+    @JoinColumn(name = "appointment_id")
+    private Appointment appointment;
 
-    @OneToOne
-    @JoinColumn(name = "slot_id", nullable = false)
-    private Slot slot;
+    @Column(name = "starts_at")
+    private LocalDateTime startsAt;
 
+    @Column(name = "reserved")
+    private Boolean reserved;
 }
 
 
