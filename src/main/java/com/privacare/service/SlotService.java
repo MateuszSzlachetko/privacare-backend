@@ -8,6 +8,7 @@ import com.privacare.model.entity.User;
 import com.privacare.repository.SlotRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,6 +18,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -95,5 +97,18 @@ public class SlotService {
                 .startsAt(slot.getStartsAt())
                 .reserved(slot.getReserved())
                 .build();
+    }
+
+    public void deleteSlot(UUID slotId) throws EmptyResultDataAccessException {
+        this.slotRepository.deleteById(slotId);
+    }
+
+    public void deleteMultipleSlots(String startDate, String endDate) {
+        LocalDateTime start = LocalDateTime.of(LocalDate.parse(startDate), LocalTime.of(0, 0, 0));
+        LocalDateTime end = LocalDateTime.of(LocalDate.parse(endDate), LocalTime.of(23, 59, 59));
+
+        List<Slot> slots = this.slotRepository.findByStartsAtBetween(start,end);
+
+        this.slotRepository.deleteAll(slots);
     }
 }
