@@ -15,5 +15,12 @@ public class ErrorDetails {
     private LocalDateTime timestamp;
 
     private List<String> messages;
+
+    public static ErrorDetails createErrorDetails(String message){
+        return ErrorDetails.builder()
+                .timestamp(LocalDateTime.now())
+                .messages(List.of(message))
+                .build();
+    }
 }
 

@@ -73,4 +73,14 @@ public class RestExceptionHandler {
                 HttpStatus.BAD_REQUEST
         );
     }
+
+    @ExceptionHandler({SlotAlreadyReservedException.class})
+    public ResponseEntity handleAppointmentControllerErrors(Exception e) {
+        if (e instanceof SlotAlreadyReservedException) {
+            ErrorDetails errorDetails = ErrorDetails.createErrorDetails(e.getMessage());
+            return ResponseEntity.badRequest().body(errorDetails);
+        }
+
+        return ResponseEntity.badRequest().build();
+    }
 }

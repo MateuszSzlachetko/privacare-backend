@@ -32,15 +32,14 @@ public class Slot {
     @JoinColumn(name = "doctor_id", nullable = false)
     private User doctor;
 
-    @ManyToOne
-    @JoinColumn(name = "appointment_id")
-    private Appointment appointment;
-
     @Column(name = "starts_at")
     private LocalDateTime startsAt;
 
     @Column(name = "reserved")
     private Boolean reserved;
+
+    @OneToOne(mappedBy = "slot")
+    private Appointment appointment;
 }
 
 

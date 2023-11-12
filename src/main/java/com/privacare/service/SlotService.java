@@ -18,6 +18,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -79,9 +80,19 @@ public class SlotService {
         LocalDateTime start = LocalDateTime.of(LocalDate.parse(startDate), LocalTime.of(0, 0, 0));
         LocalDateTime end = LocalDateTime.of(LocalDate.parse(endDate), LocalTime.of(23, 59, 59));
 
-        List<Slot> slots = this.slotRepository.findByStartsAtBetween(start,end);
+        List<Slot> slots = this.slotRepository.findByStartsAtBetween(start, end);
 
         return slots.stream().map(SlotService::mapSlotToSlotResponse).collect(Collectors.toList());
+    }
+
+    public Slot getSlotBy(UUID id) {
+        return this.slotRepository.findById(id).orElseThrow(
+                () -> new NoSuchElementException("Slot with id: " + id + " not found"));
+    }
+
+    public Slot getSlotForAppointmentCreation(UUID id) {
+        return this.slotRepository.findByIdForAppointment(id).orElseThrow(
+                () -> new NoSuchElementException("Slot with id: " + id + " not found"));
     }
 
 
@@ -107,8 +118,12 @@ public class SlotService {
         LocalDateTime start = LocalDateTime.of(LocalDate.parse(startDate), LocalTime.of(0, 0, 0));
         LocalDateTime end = LocalDateTime.of(LocalDate.parse(endDate), LocalTime.of(23, 59, 59));
 
-        List<Slot> slots = this.slotRepository.findByStartsAtBetween(start,end);
+        List<Slot> slots = this.slotRepository.findByStartsAtBetween(start, end);
 
         this.slotRepository.deleteAll(slots);
+    }
+
+    public void saveSlot(Slot slot) {
+        this.slotRepository.save(slot);
     }
 }
