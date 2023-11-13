@@ -8,6 +8,7 @@ public class UserNotFoundException extends NotFound {
         super(itemId);
     }
 
+    @Override
     public String getMessage() {
         return super.getMessage("User");
     }

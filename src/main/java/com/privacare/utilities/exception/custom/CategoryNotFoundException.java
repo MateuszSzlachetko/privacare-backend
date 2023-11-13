@@ -5,6 +5,7 @@ public class CategoryNotFoundException extends NotFound {
         super(itemId);
     }
 
+    @Override
     public String getMessage() {
         return super.getMessage("Category");
     }

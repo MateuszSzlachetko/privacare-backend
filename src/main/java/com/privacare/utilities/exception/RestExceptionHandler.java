@@ -2,8 +2,8 @@ package com.privacare.utilities.exception;
 
 
 import com.privacare.utilities.exception.custom.SlotAlreadyReservedException;
+import com.privacare.utilities.exception.custom.SlotHasAppointmentConnectedException;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -30,10 +30,7 @@ public class RestExceptionHandler {
                 .messages(List.of(exception.getMessage()))
                 .build();
 
-        return new ResponseEntity<>(
-                errorDetails,
-                HttpStatus.INTERNAL_SERVER_ERROR
-        );
+        return ResponseEntity.internalServerError().body(errorDetails);
     }
 
     @ExceptionHandler(
@@ -53,20 +50,19 @@ public class RestExceptionHandler {
                         .collect(Collectors.toList()))
                 .build();
 
-        return new ResponseEntity<>(
-                errorDetails,
-                HttpStatus.BAD_REQUEST
-        );
+        return ResponseEntity.badRequest().body(errorDetails);
     }
 
-    @ExceptionHandler({SlotAlreadyReservedException.class})
-    public ResponseEntity handleAppointmentControllerErrors(Exception e) {
-        if (e instanceof SlotAlreadyReservedException) {
-            ErrorDetails errorDetails = ErrorDetails.createErrorDetails(e.getMessage());
-            return ResponseEntity.badRequest().body(errorDetails);
-        }
+    @ExceptionHandler({
+            SlotAlreadyReservedException.class,
+            SlotHasAppointmentConnectedException.class,
+            ArithmeticException.class})
+    public ResponseEntity handleSlotExceptions(Exception e) {
+        ErrorDetails errorDetails = ErrorDetails.createErrorDetails(e.getMessage());
+        if (e instanceof ArithmeticException)
+            errorDetails.setMessages(List.of("The slot interval must be a positive integer not " + e.getMessage()));
 
-        return ResponseEntity.badRequest().build();
+        return ResponseEntity.badRequest().body(errorDetails);
     }
 
     @ExceptionHandler({NoSuchElementException.class})

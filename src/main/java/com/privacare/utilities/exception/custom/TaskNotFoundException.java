@@ -8,6 +8,7 @@ public class TaskNotFoundException extends NotFound {
         super(itemId);
     }
 
+    @Override
     public String getMessage() {
         return super.getMessage("Task");
     }
