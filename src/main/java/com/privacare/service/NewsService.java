@@ -6,6 +6,7 @@ import com.privacare.model.dto.response.NewsResponseDTO;
 import com.privacare.model.entity.News;
 import com.privacare.model.entity.User;
 import com.privacare.repository.NewsRepository;
+import com.privacare.utilities.exception.custom.NewsNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -14,7 +15,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -41,7 +41,6 @@ public class NewsService {
 
     public NewsResponseDTO addNews(NewsRequestDTO newsRequestDTO) {
         User creator = this.userService.getUserBy(newsRequestDTO.getCreatorId());
-
         News news = News.builder()
                 .creator(creator)
                 .createdAt(LocalDateTime.now())
@@ -50,13 +49,12 @@ public class NewsService {
                 .build();
 
         this.newsRepository.save(news);
-
         return mapNewsToNewsResponse(news);
     }
 
     public Integer editNews(NewsEditRequestDTO newsEditRequestDTO) {
         this.newsRepository.findById(newsEditRequestDTO.getId()).orElseThrow(
-                () -> new NoSuchElementException("News with id: " + newsEditRequestDTO.getId() + " not found"));
+                () -> new NewsNotFoundException(newsEditRequestDTO.getId()));
 
         return this.newsRepository.updateNewsBy(
                 newsEditRequestDTO.getId(),
@@ -65,13 +63,15 @@ public class NewsService {
     }
 
     public void deleteNews(UUID newsId) throws EmptyResultDataAccessException {
-        this.newsRepository.deleteById(newsId);
+        try {
+            this.newsRepository.deleteById(newsId);
+        } catch (EmptyResultDataAccessException e) {
+            throw new NewsNotFoundException(newsId);
+        }
     }
 
     public NewsResponseDTO getNewsBy(UUID newsId) {
-        News news = this.newsRepository.findById(newsId).orElseThrow(
-                () -> new NoSuchElementException("News with id: " + newsId + " not found"));
-
+        News news = this.newsRepository.findById(newsId).orElseThrow(() -> new NewsNotFoundException(newsId));
         return mapNewsToNewsResponse(news);
     }
 

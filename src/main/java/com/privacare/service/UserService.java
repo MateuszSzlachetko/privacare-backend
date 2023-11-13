@@ -3,12 +3,12 @@ package com.privacare.service;
 import com.privacare.model.dto.response.UserResponseDTO;
 import com.privacare.model.entity.User;
 import com.privacare.repository.UserRepository;
+import com.privacare.utilities.exception.custom.UserNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -19,14 +19,14 @@ public class UserService {
 
     private final UserRepository userRepository;
 
-    public User getUserBy(UUID id) throws NoSuchElementException {
+    public User getUserBy(UUID id) {
         return this.userRepository.findById(id).orElseThrow(
-                () -> new NoSuchElementException("User with id: " + id + " not found"));
+                () -> new UserNotFoundException(id));
     }
 
-    public UserResponseDTO getUserResponseDTOBy(UUID id) throws NoSuchElementException {
+    public UserResponseDTO getUserResponseDTOBy(UUID id) {
         return mapUserToUserResponse(this.userRepository.findById(id).orElseThrow(
-                () -> new NoSuchElementException("User with id: " + id + " not found")));
+                () -> new UserNotFoundException(id)));
     }
 
     public List<UserResponseDTO> getUsersByPeselFragment(String peselFragment) {
@@ -34,7 +34,7 @@ public class UserService {
                 .map(UserService::mapUserToUserResponse).collect(Collectors.toList());
     }
 
-    private static UserResponseDTO mapUserToUserResponse(User user){
+    private static UserResponseDTO mapUserToUserResponse(User user) {
         return UserResponseDTO.builder()
                 .id(user.getId())
                 .authId(user.getAuthId())

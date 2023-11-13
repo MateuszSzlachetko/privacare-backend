@@ -6,7 +6,7 @@ import com.privacare.model.entity.Appointment;
 import com.privacare.model.entity.Slot;
 import com.privacare.model.entity.User;
 import com.privacare.repository.AppointmentRepository;
-import com.privacare.utilities.exception.SlotAlreadyReservedException;
+import com.privacare.utilities.exception.custom.SlotAlreadyReservedException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

@@ -4,7 +4,6 @@ import com.privacare.model.dto.response.UserResponseDTO;
 import com.privacare.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,18 +19,14 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping
-    public ResponseEntity<List<UserResponseDTO>> getUsersByPeselFragment(
-            @RequestParam String peselFragment) {
+    public ResponseEntity<List<UserResponseDTO>> getUsersByPeselFragment(@RequestParam String peselFragment) {
         List<UserResponseDTO> result = this.userService.getUsersByPeselFragment(peselFragment);
-
-        return new ResponseEntity<>(result, HttpStatus.OK);
+        return ResponseEntity.ok().body(result);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<UserResponseDTO> getUserBy(
-            @PathVariable UUID id) {
+    public ResponseEntity<UserResponseDTO> getUserBy(@PathVariable UUID id) {
         UserResponseDTO result = this.userService.getUserResponseDTOBy(id);
-
-        return new ResponseEntity<>(result, HttpStatus.OK);
+        return ResponseEntity.ok().body(result);
     }
 }

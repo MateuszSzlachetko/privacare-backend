@@ -10,7 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.net.URI;
 import java.util.List;
 import java.util.UUID;
 
@@ -25,8 +24,7 @@ public class AppointmentController {
     @PostMapping
     public ResponseEntity<AppointmentResponseDTO> addAppointment(@RequestBody @Valid AppointmentRequestDTO appointmentRequestDTO) {
         AppointmentResponseDTO result = this.appointmentService.addAppointment(appointmentRequestDTO);
-
-        return ResponseEntity.created(URI.create("api/appointment/" + result.getId())).body(result);
+        return ResponseEntity.ok().body(result);
     }
 
     @GetMapping(params = {"startDate", "endDate", "patientId"})
@@ -64,7 +62,6 @@ public class AppointmentController {
             @RequestParam String startDate,
             @RequestParam String endDate) {
         this.appointmentService.deleteAppointments(startDate, endDate);
-
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        return ResponseEntity.noContent().build();
     }
 }

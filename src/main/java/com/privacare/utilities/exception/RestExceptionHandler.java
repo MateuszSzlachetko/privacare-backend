@@ -1,6 +1,7 @@
 package com.privacare.utilities.exception;
 
 
+import com.privacare.utilities.exception.custom.SlotAlreadyReservedException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -35,22 +36,6 @@ public class RestExceptionHandler {
         );
     }
 
-    @ExceptionHandler(NoSuchElementException.class)
-    public ResponseEntity<ErrorDetails> handleNoSuchElementException(
-            NoSuchElementException exception
-    ) {
-        log.warn("No such element exception caught: ", exception);
-        ErrorDetails errorDetails = ErrorDetails.builder()
-                .timestamp(LocalDateTime.now())
-                .messages(List.of(exception.getMessage()))
-                .build();
-
-        return new ResponseEntity<>(
-                errorDetails,
-                HttpStatus.BAD_REQUEST
-        );
-    }
-
     @ExceptionHandler(
             {MethodArgumentNotValidException.class, BindException.class}
     )
@@ -82,5 +67,12 @@ public class RestExceptionHandler {
         }
 
         return ResponseEntity.badRequest().build();
+    }
+
+    @ExceptionHandler({NoSuchElementException.class})
+    public ResponseEntity handleNotFoundExceptions(Exception e) {
+        log.warn("No such element exception caught: ", e);
+        ErrorDetails errorDetails = ErrorDetails.createErrorDetails(e.getMessage());
+        return ResponseEntity.badRequest().body(errorDetails);
     }
 }

@@ -2,12 +2,12 @@ package com.privacare.service;
 
 import com.privacare.model.entity.Category;
 import com.privacare.repository.CategoryRepository;
+import com.privacare.utilities.exception.custom.CategoryNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 
 @Service
 @Slf4j
@@ -16,9 +16,8 @@ public class CategoryService {
 
     private final CategoryRepository categoryRepository;
 
-    public Category getCategoryBy(Integer id) throws NoSuchElementException {
-        return this.categoryRepository.findById(id).orElseThrow(
-                () -> new NoSuchElementException("Category with id: " + id + " not found"));
+    public Category getCategoryBy(Integer id) {
+        return this.categoryRepository.findById(id).orElseThrow(() -> new CategoryNotFoundException(id));
     }
 
     public List<Category> getCategories() {
