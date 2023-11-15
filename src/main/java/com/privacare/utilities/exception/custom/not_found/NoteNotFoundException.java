@@ -1,11 +1,10 @@
-package com.privacare.utilities.exception.custom;
-
+package com.privacare.utilities.exception.custom.not_found;
 
 import java.util.UUID;
 
 public class NoteNotFoundException extends NotFound {
-    public NoteNotFoundException(UUID itemId) {
-        super(itemId);
+    public NoteNotFoundException(UUID noteId) {
+        super(noteId);
     }
 
     @Override

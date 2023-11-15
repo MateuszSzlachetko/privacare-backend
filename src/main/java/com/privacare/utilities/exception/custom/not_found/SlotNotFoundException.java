@@ -1,11 +1,10 @@
-package com.privacare.utilities.exception.custom;
-
+package com.privacare.utilities.exception.custom.not_found;
 
 import java.util.UUID;
 
 public class SlotNotFoundException extends NotFound {
-    public SlotNotFoundException(UUID itemId) {
-        super(itemId);
+    public SlotNotFoundException(UUID slotId) {
+        super(slotId);
     }
 
     @Override

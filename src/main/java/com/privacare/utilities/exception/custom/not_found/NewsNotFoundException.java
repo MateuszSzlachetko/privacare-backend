@@ -1,11 +1,10 @@
-package com.privacare.utilities.exception.custom;
-
+package com.privacare.utilities.exception.custom.not_found;
 
 import java.util.UUID;
 
 public class NewsNotFoundException extends NotFound {
-    public NewsNotFoundException(UUID itemId) {
-        super(itemId);
+    public NewsNotFoundException(UUID newsId) {
+        super(newsId);
     }
 
     @Override

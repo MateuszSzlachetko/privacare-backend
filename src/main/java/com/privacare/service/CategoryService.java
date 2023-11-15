@@ -2,7 +2,7 @@ package com.privacare.service;
 
 import com.privacare.model.entity.Category;
 import com.privacare.repository.CategoryRepository;
-import com.privacare.utilities.exception.custom.CategoryNotFoundException;
+import com.privacare.utilities.exception.custom.not_found.CategoryNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

@@ -16,7 +16,7 @@ import java.util.UUID;
 @RestController
 @RequiredArgsConstructor
 @Slf4j
-@RequestMapping("/api/slot")
+@RequestMapping("/api/slots")
 public class SlotController {
 
     private final SlotService slotService;

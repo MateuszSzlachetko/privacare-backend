@@ -7,7 +7,7 @@ import com.privacare.model.entity.Category;
 import com.privacare.model.entity.Task;
 import com.privacare.model.entity.User;
 import com.privacare.repository.TaskRepository;
-import com.privacare.utilities.exception.custom.TaskNotFoundException;
+import com.privacare.utilities.exception.custom.not_found.TaskNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.EmptyResultDataAccessException;

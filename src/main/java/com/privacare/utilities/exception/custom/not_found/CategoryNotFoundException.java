@@ -1,8 +1,8 @@
-package com.privacare.utilities.exception.custom;
+package com.privacare.utilities.exception.custom.not_found;
 
 public class CategoryNotFoundException extends NotFound {
-    public CategoryNotFoundException(Integer itemId) {
-        super(itemId);
+    public CategoryNotFoundException(Integer categoryId) {
+        super(categoryId);
     }
 
     @Override

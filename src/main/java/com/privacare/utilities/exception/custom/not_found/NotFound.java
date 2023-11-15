@@ -1,4 +1,4 @@
-package com.privacare.utilities.exception.custom;
+package com.privacare.utilities.exception.custom.not_found;
 
 import lombok.Getter;
 import lombok.Setter;

@@ -1,11 +1,10 @@
-package com.privacare.utilities.exception.custom;
-
+package com.privacare.utilities.exception.custom.not_found;
 
 import java.util.UUID;
 
 public class UserNotFoundException extends NotFound {
-    public UserNotFoundException(UUID itemId) {
-        super(itemId);
+    public UserNotFoundException(UUID userId) {
+        super(userId);
     }
 
     @Override

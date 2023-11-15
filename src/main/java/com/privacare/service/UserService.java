@@ -3,7 +3,7 @@ package com.privacare.service;
 import com.privacare.model.dto.response.UserResponseDTO;
 import com.privacare.model.entity.User;
 import com.privacare.repository.UserRepository;
-import com.privacare.utilities.exception.custom.UserNotFoundException;
+import com.privacare.utilities.exception.custom.not_found.UserNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

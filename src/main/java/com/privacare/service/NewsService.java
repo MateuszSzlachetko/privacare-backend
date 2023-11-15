@@ -6,7 +6,7 @@ import com.privacare.model.dto.response.NewsResponseDTO;
 import com.privacare.model.entity.News;
 import com.privacare.model.entity.User;
 import com.privacare.repository.NewsRepository;
-import com.privacare.utilities.exception.custom.NewsNotFoundException;
+import com.privacare.utilities.exception.custom.not_found.NewsNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.EmptyResultDataAccessException;

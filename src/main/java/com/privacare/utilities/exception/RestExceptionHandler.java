@@ -22,23 +22,17 @@ public class RestExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorDetails> handleGenericException(
-            Exception exception
+            Exception e
     ) {
-        log.warn("Exception caught: ", exception);
-        ErrorDetails errorDetails = ErrorDetails.builder()
-                .timestamp(LocalDateTime.now())
-                .messages(List.of(exception.getMessage()))
-                .build();
-
+        log.warn("Exception caught: ", e);
+        ErrorDetails errorDetails = ErrorDetails.createErrorDetails(e.getMessage());
         return ResponseEntity.internalServerError().body(errorDetails);
     }
 
     @ExceptionHandler(
             {MethodArgumentNotValidException.class, BindException.class}
     )
-    public ResponseEntity<ErrorDetails> handleValidationErrors(
-            MethodArgumentNotValidException exception
-    ) {
+    public ResponseEntity<ErrorDetails> handleValidationErrors(MethodArgumentNotValidException exception) {
         log.warn("Validation failed: ", exception);
 
         ErrorDetails errorDetails = ErrorDetails.builder()
@@ -57,7 +51,7 @@ public class RestExceptionHandler {
             SlotAlreadyReservedException.class,
             SlotHasAppointmentConnectedException.class,
             ArithmeticException.class})
-    public ResponseEntity handleSlotExceptions(Exception e) {
+    public ResponseEntity<ErrorDetails> handleSlotExceptions(Exception e) {
         ErrorDetails errorDetails = ErrorDetails.createErrorDetails(e.getMessage());
         if (e instanceof ArithmeticException)
             errorDetails.setMessages(List.of("The slot interval must be a positive integer not " + e.getMessage()));
@@ -66,7 +60,7 @@ public class RestExceptionHandler {
     }
 
     @ExceptionHandler({NoSuchElementException.class})
-    public ResponseEntity handleNotFoundExceptions(Exception e) {
+    public ResponseEntity<ErrorDetails> handleNotFoundExceptions(Exception e) {
         log.warn("No such element exception caught: ", e);
         ErrorDetails errorDetails = ErrorDetails.createErrorDetails(e.getMessage());
         return ResponseEntity.badRequest().body(errorDetails);

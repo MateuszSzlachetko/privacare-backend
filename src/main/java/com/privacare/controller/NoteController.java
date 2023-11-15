@@ -16,7 +16,7 @@ import java.util.UUID;
 @RestController
 @RequiredArgsConstructor
 @Slf4j
-@RequestMapping("/api/note")
+@RequestMapping("/api/notes")
 public class NoteController {
 
     private final NoteService noteService;

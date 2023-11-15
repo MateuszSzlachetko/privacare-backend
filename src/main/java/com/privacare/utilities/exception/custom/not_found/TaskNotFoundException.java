@@ -1,11 +1,10 @@
-package com.privacare.utilities.exception.custom;
-
+package com.privacare.utilities.exception.custom.not_found;
 
 import java.util.UUID;
 
 public class TaskNotFoundException extends NotFound {
-    public TaskNotFoundException(UUID itemId) {
-        super(itemId);
+    public TaskNotFoundException(UUID taskId) {
+        super(taskId);
     }
 
     @Override

@@ -7,7 +7,7 @@ import com.privacare.model.entity.Slot;
 import com.privacare.model.entity.User;
 import com.privacare.repository.SlotRepository;
 import com.privacare.utilities.exception.custom.SlotHasAppointmentConnectedException;
-import com.privacare.utilities.exception.custom.SlotNotFoundException;
+import com.privacare.utilities.exception.custom.not_found.SlotNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;

@@ -6,7 +6,7 @@ import com.privacare.model.dto.response.NoteResponseDTO;
 import com.privacare.model.entity.Note;
 import com.privacare.model.entity.User;
 import com.privacare.repository.NoteRepository;
-import com.privacare.utilities.exception.custom.NoteNotFoundException;
+import com.privacare.utilities.exception.custom.not_found.NoteNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.EmptyResultDataAccessException;

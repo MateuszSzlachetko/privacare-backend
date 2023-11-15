@@ -6,6 +6,7 @@ import com.privacare.model.entity.Appointment;
 import com.privacare.model.entity.Slot;
 import com.privacare.model.entity.User;
 import com.privacare.repository.AppointmentRepository;
+import com.privacare.utilities.exception.custom.not_found.AppointmentNotFoundException;
 import com.privacare.utilities.exception.custom.SlotAlreadyReservedException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -16,7 +17,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -38,7 +38,7 @@ public class AppointmentService {
         Slot slot = this.slotService.getSlotForAppointmentCreation(appointmentRequestDTO.getSlotId());
 
         if (slot.getReserved())
-            throw new SlotAlreadyReservedException("Slot with id: " + appointmentRequestDTO.getSlotId() + " is already reserved");
+            throw new SlotAlreadyReservedException(appointmentRequestDTO.getSlotId());
 
         Appointment appointment = Appointment.builder()
                 .creator(creator)
@@ -96,7 +96,7 @@ public class AppointmentService {
 
     public Appointment getAppointmentBy(UUID id) {
         return this.appointmentRepository.findById(id).orElseThrow(
-                () -> new NoSuchElementException("Appointment with id: " + id + " not found"));
+                () -> new AppointmentNotFoundException(id));
     }
 
     @Transactional
