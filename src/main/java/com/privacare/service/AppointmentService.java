@@ -57,9 +57,9 @@ public class AppointmentService {
     private static AppointmentResponseDTO mapAppointmentToAppointmentResponse(Appointment appointment) {
         return AppointmentResponseDTO.builder()
                 .id(appointment.getId())
-                .creatorID(appointment.getCreator().getId())
-                .patientID(appointment.getPatient().getId())
-                .slotID(appointment.getSlot().getId())
+                .creatorId(appointment.getCreator().getId())
+                .patientId(appointment.getPatient().getId())
+                .slotId(appointment.getSlot().getId())
                 .build();
     }
 

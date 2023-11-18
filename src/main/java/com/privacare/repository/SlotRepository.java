@@ -15,7 +15,7 @@ import java.util.UUID;
 
 @Repository
 public interface SlotRepository extends JpaRepository<Slot, UUID> {
-    List<Slot> findByStartsAtBetween(LocalDateTime start, LocalDateTime end);
+    List<Slot> findByStartsAtBetweenOrderByStartsAtAsc(LocalDateTime start, LocalDateTime end);
 
     @Lock(LockModeType.PESSIMISTIC_WRITE)
     @Query("SELECT s FROM Slot s WHERE s.id = :id")

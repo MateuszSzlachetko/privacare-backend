@@ -15,9 +15,9 @@ public class AppointmentResponseDTO {
 
     private UUID id;
 
-    private UUID creatorID;
+    private UUID creatorId;
 
-    private UUID patientID;
+    private UUID patientId;
 
-    private UUID slotID;
+    private UUID slotId;
 }

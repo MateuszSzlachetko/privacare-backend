@@ -81,7 +81,7 @@ public class SlotService {
         LocalDateTime start = LocalDateTime.of(LocalDate.parse(startDate), LocalTime.of(0, 0, 0));
         LocalDateTime end = LocalDateTime.of(LocalDate.parse(endDate), LocalTime.of(23, 59, 59));
 
-        List<Slot> slots = this.slotRepository.findByStartsAtBetween(start, end);
+        List<Slot> slots = this.slotRepository.findByStartsAtBetweenOrderByStartsAtAsc(start, end);
 
         return slots.stream().map(SlotService::mapSlotToSlotResponse).collect(Collectors.toList());
     }
@@ -119,7 +119,7 @@ public class SlotService {
         LocalDateTime start = LocalDateTime.of(LocalDate.parse(startDate), LocalTime.of(0, 0, 0));
         LocalDateTime end = LocalDateTime.of(LocalDate.parse(endDate), LocalTime.of(23, 59, 59));
 
-        List<Slot> slots = this.slotRepository.findByStartsAtBetween(start, end);
+        List<Slot> slots = this.slotRepository.findByStartsAtBetweenOrderByStartsAtAsc(start, end);
 
         try {
             this.slotRepository.deleteAll(slots);
