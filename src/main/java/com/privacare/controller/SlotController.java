@@ -55,4 +55,11 @@ public class SlotController {
         this.slotService.deleteMultipleSlots(startDate, endDate);
         return ResponseEntity.noContent().build();
     }
+
+    @GetMapping("/{slotId}")
+    public ResponseEntity<SlotResponseDTO> getSlotBy(
+            @PathVariable UUID slotId) {
+        SlotResponseDTO result = this.slotService.getSlotResponseBy(slotId);
+        return ResponseEntity.ok().body(result);
+    }
 }

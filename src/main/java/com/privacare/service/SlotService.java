@@ -140,4 +140,9 @@ public class SlotService {
                 .reserved(slot.getReserved())
                 .build();
     }
+
+    public SlotResponseDTO getSlotResponseBy(UUID slotId) {
+        return mapSlotToSlotResponse(this.slotRepository.findById(slotId).orElseThrow(
+                () -> new SlotNotFoundException(slotId)));
+    }
 }
