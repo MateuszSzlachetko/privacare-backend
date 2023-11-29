@@ -15,7 +15,7 @@ import java.util.UUID;
 public class UserResponseDTO {
     private UUID id;
 
-    private UUID authId;
+    private String authId;
 
     private LocalDateTime createdAt;
 

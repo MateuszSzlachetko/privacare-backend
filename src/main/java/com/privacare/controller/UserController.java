@@ -29,4 +29,10 @@ public class UserController {
         UserResponseDTO result = this.userService.getUserResponseDTOBy(id);
         return ResponseEntity.ok().body(result);
     }
+
+    @GetMapping(params = {"authId"})
+    public ResponseEntity<UserResponseDTO> getUsersByAuthId(@RequestParam String authId) {
+        UserResponseDTO result = this.userService.getUsersByAuthId(authId);
+        return ResponseEntity.ok().body(result);
+    }
 }

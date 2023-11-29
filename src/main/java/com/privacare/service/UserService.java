@@ -45,4 +45,9 @@ public class UserService {
                 .phoneNumber(user.getPhoneNumber())
                 .build();
     }
+
+    public UserResponseDTO getUsersByAuthId(String authId) {
+        return mapUserToUserResponse(this.userRepository.findByAuthId(authId).orElseThrow(
+                () -> new UserNotFoundException(authId)));
+    }
 }
