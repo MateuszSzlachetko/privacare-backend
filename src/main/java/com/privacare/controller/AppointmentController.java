@@ -51,6 +51,13 @@ public class AppointmentController {
         return ResponseEntity.ok().body(result);
     }
 
+    @GetMapping(params = {"slotId"})
+    public ResponseEntity<AppointmentResponseDTO> getAppointmentsBySlotId(
+            @RequestParam UUID slotId) {
+        AppointmentResponseDTO result = this.appointmentService.getAppointmentBySlotId(slotId);
+        return ResponseEntity.ok().body(result);
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<HttpStatus> deleteAppointment(@PathVariable UUID id) {
         this.appointmentService.deleteAppointment(id);

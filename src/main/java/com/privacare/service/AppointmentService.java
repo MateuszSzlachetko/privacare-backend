@@ -76,7 +76,7 @@ public class AppointmentService {
 
     public List<AppointmentResponseDTO> getAppointmentsBy(UUID patientId) {
         User patient = this.userService.getUserBy(patientId);
-        List<Appointment> appointments = this.appointmentRepository.findByPatientId(patient.getId());
+        List<Appointment> appointments = this.appointmentRepository.findByPatientIdOrderBySlotStartsAtDesc(patient.getId());
 
         return appointments.stream().map(AppointmentService::mapAppointmentToAppointmentResponse)
                 .collect(Collectors.toList());
@@ -114,5 +114,15 @@ public class AppointmentService {
         List<Appointment> appointments = this.appointmentRepository.findBySlotStartsAtBetween(start, end);
         appointments.stream().forEach(a -> a.getSlot().setReserved(false));
         this.appointmentRepository.deleteAll(appointments);
+    }
+
+    public AppointmentResponseDTO getAppointmentBySlotId(UUID slotId) {
+        Slot slot = this.slotService.getSlotBy(slotId);
+
+        Appointment appointment = this.appointmentRepository.findById(slot.getAppointment().getId())
+                .orElseThrow(()->
+                        new RuntimeException("Slot with id:" + slotId + "does not have any related appointment"));
+
+        return mapAppointmentToAppointmentResponse(appointment);
     }
 }
