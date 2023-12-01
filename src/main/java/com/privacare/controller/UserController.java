@@ -1,5 +1,6 @@
 package com.privacare.controller;
 
+import com.privacare.model.dto.request.UserRequestDTO;
 import com.privacare.model.dto.response.UserResponseDTO;
 import com.privacare.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -33,6 +34,12 @@ public class UserController {
     @GetMapping(params = {"authId"})
     public ResponseEntity<UserResponseDTO> getUsersByAuthId(@RequestParam String authId) {
         UserResponseDTO result = this.userService.getUsersByAuthId(authId);
+        return ResponseEntity.ok().body(result);
+    }
+
+    @PostMapping
+    public ResponseEntity<UserResponseDTO> addUser(@RequestBody UserRequestDTO userRequestDTO) {
+        UserResponseDTO result = this.userService.addUser(userRequestDTO);
         return ResponseEntity.ok().body(result);
     }
 }
