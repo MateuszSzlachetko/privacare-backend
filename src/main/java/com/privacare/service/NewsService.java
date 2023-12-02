@@ -30,9 +30,9 @@ public class NewsService {
     private final NewsRepository newsRepository;
 
     public Page<NewsResponseDTO> getNews(Integer page, Integer size) {
-        FireAuthToken authToken = (FireAuthToken) SecurityContextHolder.getContext().getAuthentication();
-        System.out.println(authToken.getUid());
-        System.out.println(authToken.isAdmin());
+//        FireAuthToken authToken = (FireAuthToken) SecurityContextHolder.getContext().getAuthentication();
+//        System.out.println(authToken.getUid());
+//        System.out.println(authToken.isAdmin());
 
         Pageable pageable = PageRequest.of(page, size, Sort.by("createdAt").descending());
 
@@ -46,6 +46,9 @@ public class NewsService {
     }
 
     public NewsResponseDTO addNews(NewsRequestDTO newsRequestDTO) {
+                FireAuthToken authToken = (FireAuthToken) SecurityContextHolder.getContext().getAuthentication();
+        System.out.println(authToken.getUid());
+        System.out.println(authToken.isAdmin());
         User creator = this.userService.getUserBy(newsRequestDTO.getCreatorId());
         News news = News.builder()
                 .creator(creator)
