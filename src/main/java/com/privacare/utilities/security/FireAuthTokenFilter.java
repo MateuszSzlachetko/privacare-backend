@@ -5,7 +5,6 @@ import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.FirebaseToken;
 import lombok.AllArgsConstructor;
 import org.springframework.lang.NonNull;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -33,19 +32,34 @@ public class FireAuthTokenFilter extends OncePerRequestFilter {
         String idToken = extractTokenFromHeader(request.getHeader("Authorization"));
 
         if (idToken != null) {
-            FirebaseToken firebaseToken;
-            try {
-                firebaseToken = this.firebaseAuth.verifyIdToken(idToken);
-            } catch (FirebaseAuthException e) {
-                throw new RuntimeException(e.getMessage());
-            }
+            FirebaseToken firebaseToken = verifyFirebaseIdToken(idToken);
+            String uid = firebaseToken.getUid();
+            Boolean isAdmin = isAdminUser(firebaseToken);
 
-            UsernamePasswordAuthenticationToken authentication =
-                    new UsernamePasswordAuthenticationToken(firebaseToken.getUid(), null, null);
-            SecurityContextHolder.getContext().setAuthentication(authentication);
+            FireAuthToken authToken = new FireAuthToken(uid, isAdmin, null);
+            setAuthContext(authToken);
         }
 
         filterChain.doFilter(request, response);
+    }
+
+    private FirebaseToken verifyFirebaseIdToken(String idToken){
+        try {
+            return this.firebaseAuth.verifyIdToken(idToken);
+        } catch (FirebaseAuthException e) {
+            throw new RuntimeException(e.getMessage());
+        }
+    }
+
+    private Boolean isAdminUser(FirebaseToken firebaseToken){
+        if (firebaseToken.getClaims().get("isAdmin") != null)
+            return  (Boolean) firebaseToken.getClaims().get("isAdmin");
+
+        return false;
+    }
+
+    private void setAuthContext(FireAuthToken fireAuthToken){
+        SecurityContextHolder.getContext().setAuthentication(fireAuthToken);
     }
 
     private String extractTokenFromHeader(String header) {

@@ -7,11 +7,11 @@ import com.privacare.model.entity.News;
 import com.privacare.model.entity.User;
 import com.privacare.repository.NewsRepository;
 import com.privacare.utilities.exception.custom.not_found.NewsNotFoundException;
+import com.privacare.utilities.security.FireAuthToken;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.*;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
@@ -30,7 +30,9 @@ public class NewsService {
     private final NewsRepository newsRepository;
 
     public Page<NewsResponseDTO> getNews(Integer page, Integer size) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        FireAuthToken authToken = (FireAuthToken) SecurityContextHolder.getContext().getAuthentication();
+        System.out.println(authToken.getUid());
+        System.out.println(authToken.isAdmin());
 
         Pageable pageable = PageRequest.of(page, size, Sort.by("createdAt").descending());
 
