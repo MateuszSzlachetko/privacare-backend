@@ -23,13 +23,13 @@ public class SecurityConfig {
                 .securityMatcher(antMatcher("/api/appointments/**"))
                 .authorizeHttpRequests((authorize) -> {
                     authorize
-                            .requestMatchers(regexMatcher(HttpMethod.GET, "\\/api\\/appointments\\?patientId=.*")).authenticated() // check matching uid request-token
+                            .requestMatchers(regexMatcher(HttpMethod.GET, "\\/api\\/appointments\\?patientId=.*")).authenticated() //done:  check matching uid request-token
                             .requestMatchers(regexMatcher(HttpMethod.GET, "\\/api\\/appointments\\?startDate=.*")).hasAuthority("ROLE_ADMIN")
                             .requestMatchers(regexMatcher(HttpMethod.GET, "\\/api\\/appointments\\?endDate=.*")).hasAuthority("ROLE_ADMIN")
                             .requestMatchers(regexMatcher(HttpMethod.GET, "\\/api\\/appointments\\?slotId=.*")).hasAuthority("ROLE_ADMIN")
-                            .requestMatchers(HttpMethod.POST).authenticated()  // check matching uid request-token
+                            .requestMatchers(HttpMethod.POST).authenticated()  //done:  check matching uid request-token
                             .requestMatchers(regexMatcher(HttpMethod.DELETE, "\\/api\\/appointments\\/multiple?.*")).hasAuthority("ROLE_ADMIN")
-                            .requestMatchers(HttpMethod.DELETE, "/api/appointments/{id}").authenticated(); // check matching uid request-token
+                            .requestMatchers(HttpMethod.DELETE, "/api/appointments/{id}").authenticated(); //done:  check matching uid request-token
                 })
                 .build();
     }
