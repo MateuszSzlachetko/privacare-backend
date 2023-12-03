@@ -15,6 +15,8 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import static com.privacare.utilities.security.UserAccessGuard.checkUserAccess;
+
 @Service
 @Slf4j
 @RequiredArgsConstructor
@@ -50,11 +52,13 @@ public class UserService {
     }
 
     public UserResponseDTO getUsersByAuthId(String authId) {
+        checkUserAccess(authId);
         return mapUserToUserResponse(this.userRepository.findByAuthId(authId).orElseThrow(
                 () -> new UserNotFoundException(authId)));
     }
 
     public UserResponseDTO addUser(UserRequestDTO userRequestDTO) {
+        checkUserAccess(userRequestDTO.getAuthId());
         Optional<User> existingUser = this.userRepository.findByAuthId(userRequestDTO.getAuthId());
 
         if (existingUser.isPresent())
