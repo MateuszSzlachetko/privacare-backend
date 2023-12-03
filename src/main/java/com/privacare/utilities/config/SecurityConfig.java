@@ -18,6 +18,20 @@ import static org.springframework.security.web.util.matcher.RegexRequestMatcher.
 public class SecurityConfig {
 
     @Bean
+    public SecurityFilterChain slotsSecurityFilterChain(HttpSecurity http) throws Exception {
+        return defaultConfiguration(http)
+                .securityMatcher(antMatcher("/api/slots/**"))
+                .authorizeHttpRequests((authorize) -> {
+                    authorize
+                            .requestMatchers(HttpMethod.GET).permitAll()
+                            .requestMatchers(HttpMethod.POST).hasAuthority("ROLE_ADMIN")
+                            .requestMatchers(HttpMethod.PUT).hasAuthority("ROLE_ADMIN")
+                            .requestMatchers(HttpMethod.DELETE).hasAuthority("ROLE_ADMIN");
+                })
+                .build();
+    }
+
+    @Bean
     public SecurityFilterChain usersSecurityFilterChain(HttpSecurity http) throws Exception {
         return defaultConfiguration(http)
                 .securityMatcher(antMatcher("/api/users/**"))
@@ -58,9 +72,9 @@ public class SecurityConfig {
                 .authorizeHttpRequests((authorize) -> {
                     authorize
                             .requestMatchers(HttpMethod.GET).permitAll()
-                            .requestMatchers(HttpMethod.POST, "/api/news/**").hasAuthority("ROLE_ADMIN")
-                            .requestMatchers(HttpMethod.PUT, "/api/news/**").hasAuthority("ROLE_ADMIN")
-                            .requestMatchers(HttpMethod.DELETE, "/api/news/**").hasAuthority("ROLE_ADMIN")
+                            .requestMatchers(HttpMethod.POST).hasAuthority("ROLE_ADMIN")
+                            .requestMatchers(HttpMethod.PUT).hasAuthority("ROLE_ADMIN")
+                            .requestMatchers(HttpMethod.DELETE).hasAuthority("ROLE_ADMIN")
                             .anyRequest().authenticated();
                 })
                 .build();

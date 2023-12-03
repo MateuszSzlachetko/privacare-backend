@@ -4,6 +4,7 @@ import com.privacare.model.dto.request.MultipleSlotsRequestDTO;
 import com.privacare.model.dto.request.SlotRequestDTO;
 import com.privacare.model.dto.response.SlotResponseDTO;
 import com.privacare.service.SlotService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +18,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 @Slf4j
 @RequestMapping("/api/slots")
+@SecurityRequirement(name = "bearerAuth")
 public class SlotController {
 
     private final SlotService slotService;
