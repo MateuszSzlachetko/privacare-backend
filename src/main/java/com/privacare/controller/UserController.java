@@ -3,6 +3,7 @@ package com.privacare.controller;
 import com.privacare.model.dto.request.UserRequestDTO;
 import com.privacare.model.dto.response.UserResponseDTO;
 import com.privacare.service.UserService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -15,12 +16,13 @@ import java.util.UUID;
 @RequiredArgsConstructor
 @Slf4j
 @RequestMapping("/api/users")
+@SecurityRequirement(name = "bearerAuth")
 public class UserController {
 
     private final UserService userService;
 
-    @GetMapping
-    public ResponseEntity<List<UserResponseDTO>> getUsersByPeselFragment(@RequestParam String peselFragment) {
+    @GetMapping(params = {"peselFragment"})
+    public ResponseEntity<List<UserResponseDTO>> getUsersByPeselFragment(@RequestParam(required = false) String peselFragment) {
         List<UserResponseDTO> result = this.userService.getUsersByPeselFragment(peselFragment);
         return ResponseEntity.ok().body(result);
     }
@@ -32,7 +34,7 @@ public class UserController {
     }
 
     @GetMapping(params = {"authId"})
-    public ResponseEntity<UserResponseDTO> getUsersByAuthId(@RequestParam String authId) {
+    public ResponseEntity<UserResponseDTO> getUsersByAuthId(@RequestParam(required = false) String authId) {
         UserResponseDTO result = this.userService.getUsersByAuthId(authId);
         return ResponseEntity.ok().body(result);
     }

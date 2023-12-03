@@ -11,10 +11,25 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import static org.springframework.security.web.util.matcher.AntPathRequestMatcher.antMatcher;
+import static org.springframework.security.web.util.matcher.RegexRequestMatcher.regexMatcher;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
+
+    @Bean
+    public SecurityFilterChain usersSecurityFilterChain(HttpSecurity http) throws Exception {
+        return defaultConfiguration(http)
+                .securityMatcher(antMatcher("/api/users/**"))
+                .authorizeHttpRequests((authorize) -> {
+                    authorize
+                            .requestMatchers(regexMatcher(HttpMethod.GET,"\\/api\\/users\\?authId=.*")).authenticated()  // check matching uid request-token
+                            .requestMatchers(regexMatcher(HttpMethod.GET,"\\/api\\/users\\?peselFragment=.*")).hasAuthority("ROLE_ADMIN")
+                            .requestMatchers(antMatcher(HttpMethod.GET, "/api/users/{id}")).hasAuthority("ROLE_ADMIN")
+                            .requestMatchers(antMatcher(HttpMethod.POST, "/api/users")).authenticated(); // check matching uid request-token
+                })
+                .build();
+    }
 
     @Bean
     public SecurityFilterChain notesSecurityFilterChain(HttpSecurity http) throws Exception {
