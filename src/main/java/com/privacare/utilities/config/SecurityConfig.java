@@ -56,7 +56,7 @@ public class SecurityConfig {
                     authorize
                             .requestMatchers(regexMatcher(HttpMethod.GET, "\\/api\\/users\\?authId=.*")).authenticated()  //done:  check matching uid request-token
                             .requestMatchers(regexMatcher(HttpMethod.GET, "\\/api\\/users\\?peselFragment=.*")).hasAuthority("ROLE_ADMIN")
-                            .requestMatchers(antMatcher(HttpMethod.GET, "/api/users/{id}")).hasAuthority("ROLE_ADMIN")
+                            .requestMatchers(antMatcher(HttpMethod.GET, "/api/users/{id}")).authenticated() //done:  check matching uid request-token, allow doctor getting
                             .requestMatchers(antMatcher(HttpMethod.POST, "/api/users")).authenticated(); //done:  check matching uid request-token
                 })
                 .build();

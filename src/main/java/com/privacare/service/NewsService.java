@@ -7,12 +7,10 @@ import com.privacare.model.entity.News;
 import com.privacare.model.entity.User;
 import com.privacare.repository.NewsRepository;
 import com.privacare.utilities.exception.custom.not_found.NewsNotFoundException;
-import com.privacare.utilities.security.FireAuthToken;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.*;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -30,10 +28,6 @@ public class NewsService {
     private final NewsRepository newsRepository;
 
     public Page<NewsResponseDTO> getNews(Integer page, Integer size) {
-//        FireAuthToken authToken = (FireAuthToken) SecurityContextHolder.getContext().getAuthentication();
-//        System.out.println(authToken.getUid());
-//        System.out.println(authToken.isAdmin());
-
         Pageable pageable = PageRequest.of(page, size, Sort.by("createdAt").descending());
 
         Page<News> result = this.newsRepository.findAll(pageable);
@@ -46,9 +40,6 @@ public class NewsService {
     }
 
     public NewsResponseDTO addNews(NewsRequestDTO newsRequestDTO) {
-                FireAuthToken authToken = (FireAuthToken) SecurityContextHolder.getContext().getAuthentication();
-        System.out.println(authToken.getUid());
-        System.out.println(authToken.isAdmin());
         User creator = this.userService.getUserBy(newsRequestDTO.getCreatorId());
         News news = News.builder()
                 .creator(creator)

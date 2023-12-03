@@ -21,7 +21,7 @@ import static com.privacare.utilities.security.UserAccessGuard.checkUserAccess;
 @Slf4j
 @RequiredArgsConstructor
 public class UserService {
-
+    private final String doctorId = "9dbae116-3954-4a2c-9308-31fb971dc6fc";
     private final UserRepository userRepository;
 
     public User getUserBy(UUID id) {
@@ -30,8 +30,13 @@ public class UserService {
     }
 
     public UserResponseDTO getUserResponseDTOBy(UUID id) {
-        return mapUserToUserResponse(this.userRepository.findById(id).orElseThrow(
-                () -> new UserNotFoundException(id)));
+        User user = this.userRepository.findById(id).orElseThrow(
+                () -> new UserNotFoundException(id));
+        // refactor in the future to allow doctor getting in a normal way
+        // and to hide personal data in other DTO
+        if (!user.getId().toString().equals(this.doctorId))
+            checkUserAccess(user.getAuthId());
+        return mapUserToUserResponse(user);
     }
 
     public List<UserResponseDTO> getUsersByPeselFragment(String peselFragment) {
