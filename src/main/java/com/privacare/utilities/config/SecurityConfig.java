@@ -18,6 +18,23 @@ import static org.springframework.security.web.util.matcher.RegexRequestMatcher.
 public class SecurityConfig {
 
     @Bean
+    public SecurityFilterChain appointmentsSecurityFilterChain(HttpSecurity http) throws Exception {
+        return defaultConfiguration(http)
+                .securityMatcher(antMatcher("/api/appointments/**"))
+                .authorizeHttpRequests((authorize) -> {
+                    authorize
+                            .requestMatchers(regexMatcher(HttpMethod.GET, "\\/api\\/appointments\\?patientId=.*")).authenticated() // check matching uid request-token
+                            .requestMatchers(regexMatcher(HttpMethod.GET, "\\/api\\/appointments\\?startDate=.*")).hasAuthority("ROLE_ADMIN")
+                            .requestMatchers(regexMatcher(HttpMethod.GET, "\\/api\\/appointments\\?endDate=.*")).hasAuthority("ROLE_ADMIN")
+                            .requestMatchers(regexMatcher(HttpMethod.GET, "\\/api\\/appointments\\?slotId=.*")).hasAuthority("ROLE_ADMIN")
+                            .requestMatchers(HttpMethod.POST).authenticated()  // check matching uid request-token
+                            .requestMatchers(regexMatcher(HttpMethod.DELETE, "\\/api\\/appointments\\/multiple?.*")).hasAuthority("ROLE_ADMIN")
+                            .requestMatchers(HttpMethod.DELETE, "/api/appointments/{id}").authenticated(); // check matching uid request-token
+                })
+                .build();
+    }
+
+    @Bean
     public SecurityFilterChain slotsSecurityFilterChain(HttpSecurity http) throws Exception {
         return defaultConfiguration(http)
                 .securityMatcher(antMatcher("/api/slots/**"))
@@ -37,8 +54,8 @@ public class SecurityConfig {
                 .securityMatcher(antMatcher("/api/users/**"))
                 .authorizeHttpRequests((authorize) -> {
                     authorize
-                            .requestMatchers(regexMatcher(HttpMethod.GET,"\\/api\\/users\\?authId=.*")).authenticated()  // check matching uid request-token
-                            .requestMatchers(regexMatcher(HttpMethod.GET,"\\/api\\/users\\?peselFragment=.*")).hasAuthority("ROLE_ADMIN")
+                            .requestMatchers(regexMatcher(HttpMethod.GET, "\\/api\\/users\\?authId=.*")).authenticated()  // check matching uid request-token
+                            .requestMatchers(regexMatcher(HttpMethod.GET, "\\/api\\/users\\?peselFragment=.*")).hasAuthority("ROLE_ADMIN")
                             .requestMatchers(antMatcher(HttpMethod.GET, "/api/users/{id}")).hasAuthority("ROLE_ADMIN")
                             .requestMatchers(antMatcher(HttpMethod.POST, "/api/users")).authenticated(); // check matching uid request-token
                 })

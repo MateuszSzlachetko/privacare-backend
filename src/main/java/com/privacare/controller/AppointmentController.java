@@ -3,6 +3,7 @@ package com.privacare.controller;
 import com.privacare.model.dto.request.AppointmentRequestDTO;
 import com.privacare.model.dto.response.AppointmentResponseDTO;
 import com.privacare.service.AppointmentService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -17,6 +18,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 @Slf4j
 @RequestMapping("/api/appointments")
+@SecurityRequirement(name = "bearerAuth")
 public class AppointmentController {
 
     private final AppointmentService appointmentService;
@@ -29,31 +31,31 @@ public class AppointmentController {
 
     @GetMapping(params = {"startDate", "endDate", "patientId"})
     public ResponseEntity<List<AppointmentResponseDTO>> getAppointmentsBy(
-            @RequestParam String startDate,
-            @RequestParam String endDate,
-            @RequestParam UUID patientId) {
+            @RequestParam(required = false) String startDate,
+            @RequestParam(required = false) String endDate,
+            @RequestParam(required = false) UUID patientId) {
         List<AppointmentResponseDTO> result = this.appointmentService.getAppointmentsBy(startDate, endDate, patientId);
         return ResponseEntity.ok().body(result);
     }
 
     @GetMapping(params = {"startDate", "endDate"})
     public ResponseEntity<List<AppointmentResponseDTO>> getAppointments(
-            @RequestParam String startDate,
-            @RequestParam String endDate) {
+            @RequestParam(required = false) String startDate,
+            @RequestParam(required = false) String endDate) {
         List<AppointmentResponseDTO> result = this.appointmentService.getAppointmentsBy(startDate, endDate);
         return ResponseEntity.ok().body(result);
     }
 
     @GetMapping(params = {"patientId"})
     public ResponseEntity<List<AppointmentResponseDTO>> getAppointmentsById(
-            @RequestParam UUID patientId) {
+            @RequestParam(required = false) UUID patientId) {
         List<AppointmentResponseDTO> result = this.appointmentService.getAppointmentsBy(patientId);
         return ResponseEntity.ok().body(result);
     }
 
     @GetMapping(params = {"slotId"})
     public ResponseEntity<AppointmentResponseDTO> getAppointmentsBySlotId(
-            @RequestParam UUID slotId) {
+            @RequestParam(required = false) UUID slotId) {
         AppointmentResponseDTO result = this.appointmentService.getAppointmentBySlotId(slotId);
         return ResponseEntity.ok().body(result);
     }
