@@ -3,7 +3,6 @@ package com.privacare.utilities.config;
 import com.privacare.utilities.security.FireAuthTokenFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -18,49 +17,47 @@ import static org.springframework.security.web.util.matcher.AntPathRequestMatche
 public class SecurityConfig {
 
     @Bean
-    @Order(2)
-    public SecurityFilterChain unauthorizedSecurityFilterChain(HttpSecurity http) throws Exception {
-        return http
-                .sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and()
-                .csrf().disable()
-                .logout().disable()
+    public SecurityFilterChain notesSecurityFilterChain(HttpSecurity http) throws Exception {
+        return defaultConfiguration(http)
+                .securityMatcher(antMatcher("/api/notes/**"))
+                .authorizeHttpRequests((authorize) -> {
+                    authorize.anyRequest().hasAuthority("ROLE_ADMIN");
+                })
+                .build();
+    }
+
+    @Bean
+    public SecurityFilterChain tasksSecurityFilterChain(HttpSecurity http) throws Exception {
+        return defaultConfiguration(http)
+                .securityMatcher(antMatcher("/api/tasks/**"))
+                .authorizeHttpRequests((authorize) -> {
+                    authorize.anyRequest().hasAuthority("ROLE_ADMIN");
+                })
+                .build();
+    }
+
+    @Bean
+    public SecurityFilterChain newsSecurityFilterChain(HttpSecurity http) throws Exception {
+        return defaultConfiguration(http)
+                .securityMatcher(antMatcher("/api/news/**"))
                 .authorizeHttpRequests((authorize) -> {
                     authorize
-                            .requestMatchers(HttpMethod.POST).authenticated()
-                            .and().addFilterBefore(new FireAuthTokenFilter(), UsernamePasswordAuthenticationFilter.class);
-                }).build();
-
+                            .requestMatchers(HttpMethod.GET).permitAll()
+                            .requestMatchers(HttpMethod.POST, "/api/news/**").hasAuthority("ROLE_ADMIN")
+                            .requestMatchers(HttpMethod.PUT, "/api/news/**").hasAuthority("ROLE_ADMIN")
+                            .requestMatchers(HttpMethod.DELETE, "/api/news/**").hasAuthority("ROLE_ADMIN")
+                            .anyRequest().authenticated();
+                })
+                .build();
     }
 
-    @Bean
-    @Order(1)
-    public SecurityFilterChain tasksSecurityFilterChain(HttpSecurity http) throws Exception {
+    private HttpSecurity defaultConfiguration(HttpSecurity http) throws Exception {
         return http
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .csrf().disable()
                 .logout().disable()
-                .securityMatcher(antMatcher(HttpMethod.GET, "/api/tasks/**"))
-                .authorizeHttpRequests((authorize) -> {
-                    authorize.requestMatchers(HttpMethod.GET).permitAll();
-                }).build();
-    }
-
-    @Bean
-    @Order(0)
-    public SecurityFilterChain newsSecurityFilterChain(HttpSecurity http) throws Exception {
-        return http
-                .sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and()
-                .csrf().disable()
-                .logout().disable()
-                .securityMatcher(antMatcher(HttpMethod.GET, "/api/news/**"))
-                .authorizeHttpRequests((authorize) -> {
-                    authorize.requestMatchers(HttpMethod.GET).permitAll();
-                }).build();
+                .addFilterBefore(new FireAuthTokenFilter(), UsernamePasswordAuthenticationFilter.class);
     }
 }

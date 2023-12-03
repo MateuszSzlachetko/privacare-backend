@@ -4,6 +4,7 @@ import com.privacare.model.dto.request.NoteEditRequestDTO;
 import com.privacare.model.dto.request.NoteRequestDTO;
 import com.privacare.model.dto.response.NoteResponseDTO;
 import com.privacare.service.NoteService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +18,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 @Slf4j
 @RequestMapping("/api/notes")
+@SecurityRequirement(name = "bearerAuth")
 public class NoteController {
 
     private final NoteService noteService;
