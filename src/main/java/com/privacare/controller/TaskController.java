@@ -4,6 +4,7 @@ import com.privacare.model.dto.request.TaskEditRequestDTO;
 import com.privacare.model.dto.request.TaskRequestDTO;
 import com.privacare.model.dto.response.TaskResponseDTO;
 import com.privacare.service.TaskService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +18,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 @Slf4j
 @RequestMapping("/api/tasks")
+@SecurityRequirement(name = "bearerAuth")
 public class TaskController {
 
     private final TaskService taskService;

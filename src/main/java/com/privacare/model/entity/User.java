@@ -30,7 +30,7 @@ public class User {
     private UUID id;
 
     @Column
-    private UUID authId;
+    private String authId;
 
     @Column(name = "created_at")
     private LocalDateTime createdAt;

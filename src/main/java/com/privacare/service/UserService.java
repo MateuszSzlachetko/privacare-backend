@@ -1,5 +1,6 @@
 package com.privacare.service;
 
+import com.privacare.model.dto.request.UserRequestDTO;
 import com.privacare.model.dto.response.UserResponseDTO;
 import com.privacare.model.entity.User;
 import com.privacare.repository.UserRepository;
@@ -8,15 +9,19 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
+
+import static com.privacare.utilities.security.UserAccessGuard.checkUserAccess;
 
 @Service
 @Slf4j
 @RequiredArgsConstructor
 public class UserService {
-
+    private final String doctorId = "9dbae116-3954-4a2c-9308-31fb971dc6fc";
     private final UserRepository userRepository;
 
     public User getUserBy(UUID id) {
@@ -25,8 +30,13 @@ public class UserService {
     }
 
     public UserResponseDTO getUserResponseDTOBy(UUID id) {
-        return mapUserToUserResponse(this.userRepository.findById(id).orElseThrow(
-                () -> new UserNotFoundException(id)));
+        User user = this.userRepository.findById(id).orElseThrow(
+                () -> new UserNotFoundException(id));
+        // refactor in the future to allow doctor getting in a normal way
+        // and to hide personal data in other DTO
+        if (!user.getId().toString().equals(this.doctorId))
+            checkUserAccess(user.getAuthId());
+        return mapUserToUserResponse(user);
     }
 
     public List<UserResponseDTO> getUsersByPeselFragment(String peselFragment) {
@@ -44,5 +54,31 @@ public class UserService {
                 .pesel(user.getPesel())
                 .phoneNumber(user.getPhoneNumber())
                 .build();
+    }
+
+    public UserResponseDTO getUsersByAuthId(String authId) {
+        checkUserAccess(authId);
+        return mapUserToUserResponse(this.userRepository.findByAuthId(authId).orElseThrow(
+                () -> new UserNotFoundException(authId)));
+    }
+
+    public UserResponseDTO addUser(UserRequestDTO userRequestDTO) {
+        checkUserAccess(userRequestDTO.getAuthId());
+        Optional<User> existingUser = this.userRepository.findByAuthId(userRequestDTO.getAuthId());
+
+        if (existingUser.isPresent())
+            throw new RuntimeException("User with authId: " + userRequestDTO.getAuthId() + " already exists");
+
+        User user = User.builder()
+                .authId(userRequestDTO.getAuthId())
+                .createdAt(LocalDateTime.now())
+                .name(userRequestDTO.getName())
+                .surname(userRequestDTO.getSurname())
+                .pesel(userRequestDTO.getPesel())
+                .phoneNumber(userRequestDTO.getPhoneNumber())
+                .build();
+
+        this.userRepository.save(user);
+        return mapUserToUserResponse(user);
     }
 }

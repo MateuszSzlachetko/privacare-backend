@@ -4,6 +4,7 @@ import com.privacare.model.dto.request.NewsEditRequestDTO;
 import com.privacare.model.dto.request.NewsRequestDTO;
 import com.privacare.model.dto.response.NewsResponseDTO;
 import com.privacare.service.NewsService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -13,10 +14,12 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.UUID;
 
+
 @RestController
 @RequiredArgsConstructor
 @Slf4j
 @RequestMapping("/api/news")
+@SecurityRequirement(name = "bearerAuth")
 public class NewsController {
 
     private final NewsService newsService;

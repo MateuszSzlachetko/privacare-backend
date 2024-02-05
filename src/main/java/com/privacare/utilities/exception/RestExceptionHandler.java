@@ -3,7 +3,9 @@ package com.privacare.utilities.exception;
 
 import com.privacare.utilities.exception.custom.SlotAlreadyReservedException;
 import com.privacare.utilities.exception.custom.SlotHasAppointmentConnectedException;
+import com.privacare.utilities.exception.custom.UnauthorizedAccess;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -64,5 +66,12 @@ public class RestExceptionHandler {
         log.warn("No such element exception caught: ", e);
         ErrorDetails errorDetails = ErrorDetails.createErrorDetails(e.getMessage());
         return ResponseEntity.badRequest().body(errorDetails);
+    }
+
+    @ExceptionHandler({UnauthorizedAccess.class})
+    public ResponseEntity<ErrorDetails> handleUnauthorizedAccessExceptions(Exception e) {
+        log.warn(e.getMessage());
+        ErrorDetails errorDetails = ErrorDetails.createErrorDetails(e.getMessage());
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorDetails);
     }
 }

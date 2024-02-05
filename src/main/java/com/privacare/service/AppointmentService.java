@@ -20,6 +20,8 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import static com.privacare.utilities.security.UserAccessGuard.checkUserAccess;
+
 @Service
 @Slf4j
 @RequiredArgsConstructor
@@ -36,6 +38,12 @@ public class AppointmentService {
         User creator = this.userService.getUserBy(appointmentRequestDTO.getCreatorId());
         User patient = this.userService.getUserBy(appointmentRequestDTO.getPatientId());
         Slot slot = this.slotService.getSlotForAppointmentCreation(appointmentRequestDTO.getSlotId());
+
+        // patients can only create appointments for themselves
+        checkUserAccess(creator.getAuthId());
+        checkUserAccess(patient.getAuthId());
+        // doctor admin access will pass
+
 
         if (slot.getReserved())
             throw new SlotAlreadyReservedException(appointmentRequestDTO.getSlotId());
@@ -76,6 +84,8 @@ public class AppointmentService {
 
     public List<AppointmentResponseDTO> getAppointmentsBy(UUID patientId) {
         User patient = this.userService.getUserBy(patientId);
+        checkUserAccess(patient.getAuthId());
+
         List<Appointment> appointments = this.appointmentRepository.findByPatientIdOrderBySlotStartsAtDesc(patient.getId());
 
         return appointments.stream().map(AppointmentService::mapAppointmentToAppointmentResponse)
@@ -102,6 +112,8 @@ public class AppointmentService {
     @Transactional
     public void deleteAppointment(UUID id) {
         Appointment appointment = this.getAppointmentBy(id);
+        checkUserAccess(appointment.getCreator().getAuthId());
+
         appointment.getSlot().setReserved(false); // no need to explicitly save because of the transaction
         this.appointmentRepository.deleteById(id);
     }
